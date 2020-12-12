@@ -67,6 +67,12 @@ struct ScalarOp<ONNXExpOp> {
 };
 
 template <>
+struct ScalarOp<ONNXErfOp> {
+  using FOp = ErfOp;
+  using IOp = ErfOp; // not use
+};
+
+template <>
 struct ScalarOp<ONNXSumOp> {
   using FOp = AddFOp;
   using IOp = AddIOp;
@@ -82,6 +88,12 @@ template <>
 struct ScalarOp<ONNXLogOp> {
   using FOp = LogOp;
   using IOp = LogOp; // not use
+};
+
+template <>
+struct ScalarOp<ONNXPowOp> {
+  using FOp = PowOp;
+  using IOp = PowOp; // not use
 };
 
 template <>
@@ -770,12 +782,14 @@ void populateLoweringONNXElementwiseOpPattern(
     OwningRewritePatternList &patterns, MLIRContext *ctx) {
   patterns.insert<ONNXElementwiseUnaryOpLowering<mlir::ONNXAbsOp>,
       ONNXElementwiseVariadicOpLowering<mlir::ONNXAddOp>,
+      ONNXElementwiseVariadicOpLowering<mlir::ONNXPowOp>,
       ONNXElementwiseVariadicOpLowering<mlir::ONNXAndOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXCosOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXCoshOp>,
       ONNXElementwiseVariadicOpLowering<mlir::ONNXDivOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXEluOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXExpOp>,
+      ONNXElementwiseUnaryOpLowering<mlir::ONNXErfOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXHardSigmoidOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXLeakyReluOp>,
       ONNXElementwiseBinaryOpLowering<mlir::ONNXLessOp>,
