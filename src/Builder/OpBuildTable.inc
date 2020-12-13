@@ -96,6 +96,8 @@ import_handler_map_["GatherElements"] =
    &onnx_mlir::detail::FrontendGenImpl::buildOperation<mlir::ONNXGatherElementsOp>;
 import_handler_map_["GatherND"] = 
    &onnx_mlir::detail::FrontendGenImpl::buildOperation<mlir::ONNXGatherNDOp>;
+import_handler_map_["Gelu"] = 
+   &onnx_mlir::detail::FrontendGenImpl::buildOperation<mlir::ONNXGeluOp>;
 import_handler_map_["Gemm"] = 
    &onnx_mlir::detail::FrontendGenImpl::buildOperation<mlir::ONNXGemmOp>;
 import_handler_map_["GlobalAveragePool"] = 

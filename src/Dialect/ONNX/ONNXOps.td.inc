@@ -1352,6 +1352,29 @@ def ONNXFloorOp:ONNX_Op<"Floor",
   }];
 }
 
+def ONNXGeluOp:ONNX_Op<"Gelu",
+  [NoSideEffect, DeclareOpInterfaceMethods<ShapeInferenceOpInterface>]> {
+  let summary = "ONNX Gelu operation";
+  let description = [{
+  "Glu takes one input data (Tensor<T>) and produces one output data"
+  "(Tensor<T>) where the gelu function, y = 0.5x (1 + erf(x / sqrt(2)) ), is applied to the"
+  "tensor elementwise."
+  }];
+  let arguments = (ins AnyTypeOf<[TensorOf<[F16]>, TensorOf<[F32]>, TensorOf<[F64]>, AnyMemRef]>:$X);
+  let results = (outs AnyTypeOf<[TensorOf<[F16]>, TensorOf<[F32]>, TensorOf<[F64]>, AnyMemRef]>:$Y);
+  let extraClassDeclaration = [{
+    static int getNumberOfOperands() {
+      return 1;
+    }
+    static int getNumberOfResults() {
+      return 1;
+    }
+    static std::vector<int> getTypeMap() {
+      return {20};
+    }
+  }];
+}
+
 def ONNXGRUOp:ONNX_Op<"GRU",
   [NoSideEffect, DeclareOpInterfaceMethods<ShapeInferenceOpInterface>]> {
   let summary = "ONNX GRU operation";

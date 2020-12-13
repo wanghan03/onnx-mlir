@@ -189,6 +189,8 @@ Value applyActivation(ConversionPatternRewriter &rewriter, Location loc,
     res = rewriter.create<ONNXSoftsignOp>(loc, scalarMemRefType, alloc);
   else if (activation.name.equals_lower("softplus"))
     res = rewriter.create<ONNXSoftplusOp>(loc, scalarMemRefType, alloc);
+  else if (activation.name.equals_lower("gelu"))
+    res = rewriter.create<ONNXGeluOp>(loc, scalarMemRefType, alloc);
   else
     llvm_unreachable("Unsupported activation");
 

@@ -657,6 +657,14 @@ LogicalResult ONNXEluOp::inferShapes() {
 }
 
 //===----------------------------------------------------------------------===//
+// Gelu
+//===----------------------------------------------------------------------===//
+LogicalResult ONNXGeluOp::inferShapes() {
+  getResult().setType(getOperand().getType());
+  return success();
+}
+
+//===----------------------------------------------------------------------===//
 // Relu
 //===----------------------------------------------------------------------===//
 /// Infer the output shape of the ONNXReluOp. This method is required by the

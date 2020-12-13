@@ -353,6 +353,32 @@ Value emitScalarOpFor<ONNXSeluOp>(ConversionPatternRewriter &rewriter,
 }
 
 //===----------------------------------------------------------------------===//
+// Scalar unary ops for lowering ONNXGeluOp
+//===----------------------------------------------------------------------===//
+template <>
+Value emitScalarOpFor<ONNXGeluOp>(ConversionPatternRewriter &rewriter,
+    Location loc, Operation *op, Type elementType,
+    ArrayRef<Value> scalarOperands) {
+  // y = 0.5x (1 + erf(x / sqrt(2)) )
+  // ONNXGeluOp(%X) = MulFOp(MulFOp(ConstantOp 0.5, %X),
+  //                         AddFOp(ConstantOp 1,
+  //                                ErfOp(DivFOp(%X,
+  //                                             SqrtOp(ConstantOp 2)))))
+  Value operand = scalarOperands[0];
+  auto one = emitConstantOp(rewriter, loc, elementType, 1);
+  auto two = emitConstantOp(rewriter, loc, elementType, 2);
+  auto half = rewriter.create<DivFOp>(loc, one, two);
+  auto rootTwo = rewriter.create<SqrtOp>(loc, two);
+  auto erfResult = rewriter.create<ErfOp>(loc,
+      rewriter.create<DivFOp>(loc, operand, rootTwo));
+  auto result = rewriter.create<MulFOp>(
+      loc, half, rewriter.create<MulFOp>(
+          loc, operand, rewriter.create<AddFOp>(loc, one, erfResult)));
+  
+  return result;
+}
+
+//===----------------------------------------------------------------------===//
 // Scalar unary ops for lowering ONNXReciprocalOp
 //===----------------------------------------------------------------------===//
 template <>
@@ -790,6 +816,7 @@ void populateLoweringONNXElementwiseOpPattern(
       ONNXElementwiseUnaryOpLowering<mlir::ONNXEluOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXExpOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXErfOp>,
+      ONNXElementwiseUnaryOpLowering<mlir::ONNXGeluOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXHardSigmoidOp>,
       ONNXElementwiseUnaryOpLowering<mlir::ONNXLeakyReluOp>,
       ONNXElementwiseBinaryOpLowering<mlir::ONNXLessOp>,
