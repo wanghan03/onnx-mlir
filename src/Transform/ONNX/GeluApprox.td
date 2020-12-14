@@ -41,10 +41,6 @@ def Gelu2 : Pat<
 (ONNXDivOp $x, (ONNXAddOp $one, (ONNXExpOp (ONNXMulOp $x, (ONNXConstantOp (GetNullAttr), (createDenseElementsAttrFromFloatAttr $x, (constant))) )))),
 [],
   (addBenefit 2)>;
-def cubed : Pat<
- (ONNXPowOp $x,$three),
-(ONNXMulOp(ONNXMulOp $x,$x),$x),
-  [],
-  (addBenefit 2)>;
+
 
 #endif // ONNX_GELU
