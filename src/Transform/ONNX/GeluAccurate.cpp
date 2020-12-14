@@ -1,5 +1,3 @@
-
-
 #include "mlir/IR/Matchers.h"
 #include "mlir/IR/PatternMatch.h"
 #include "mlir/Pass/Pass.h"
@@ -24,20 +22,20 @@ DenseElementsAttr createDenseElementsAttrFromFloatAttr(
   return mlir::DenseElementsAttr::get(tensorType, llvm::makeArrayRef(values));
 }
 
-#include "src/Transform/ONNX/GeluApprox.inc"
-struct GeluApproxPass
-    : public PassWrapper<GeluApproxPass, FunctionPass> {
+#include "src/Transform/ONNX/GeluAccurate.inc"
+struct GeluAccuratePass
+    : public PassWrapper<GeluAccuratePass, FunctionPass> {
   void runOnFunction() final;
 };
 } // end anonymous namespace.
 
-void GeluApproxPass::runOnFunction() {
+void GeluAccuratePass::runOnFunction() {
   auto function = getFunction();
   MLIRContext *context = &getContext();
 
   ConversionTarget target(getContext());
   target.addLegalDialect<ONNXOpsDialect>();
-   target.addIllegalOp<ONNXPowOp>();
+   target.addIllegalOp<ONNXGeluOp>();
   OwningRewritePatternList patterns;
   populateWithGenerated(context, patterns);
 
@@ -47,6 +45,6 @@ void GeluApproxPass::runOnFunction() {
 /*!
  * Create a DecomposeONNX pass.
  */
-std::unique_ptr<mlir::Pass> mlir::createGeluApproxPass() {
-  return std::make_unique<GeluApproxPass>();
+std::unique_ptr<mlir::Pass> mlir::createGeluAccuratePass() {
+  return std::make_unique<GeluAccuratePass>();
 }

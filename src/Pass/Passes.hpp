@@ -17,7 +17,10 @@ class Pass;
 
 /// Pass for rewriting inside frontend dialect.
 std::unique_ptr<Pass> createDecomposeONNXToONNXPass();
-std::unique_ptr<Pass> createGeluApproxPass();
+std::unique_ptr<Pass> createGeluCombinePass();
+std::unique_ptr<Pass> createGeluAccuratePass();
+std::unique_ptr<Pass> createGeluApproximatePass();
+std::unique_ptr<Pass> createGeluSuperApproximatePass();
 std::unique_ptr<Pass> createShapeInferencePass();
 
 std::unique_ptr<Pass> createConstPropONNXToONNXPass();

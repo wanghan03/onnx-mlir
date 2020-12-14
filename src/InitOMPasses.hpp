@@ -26,11 +26,32 @@ void initOMPasses() {
         return mlir::createConstPropONNXToONNXPass();
       });
 
-    mlir::registerPass("gelu-approx",
-      "Use Gelu Approximation.",
+    mlir::registerPass("gelu-combine",
+      "Use Gelu Combination.",
       []() -> std::unique_ptr<mlir::Pass> {
-        return mlir::createGeluApproxPass();
+        return mlir::createGeluCombinePass();
       });
+      
+        mlir::registerPass("gelu-accurate",
+      "Use Gelu Accurate.",
+      []() -> std::unique_ptr<mlir::Pass> {
+        return mlir::createGeluAccuratePass();
+      });
+      
+              mlir::registerPass("gelu-approximate",
+      "Use Gelu approximate.",
+      []() -> std::unique_ptr<mlir::Pass> {
+        return mlir::createGeluApproximatePass();
+      });
+
+
+        mlir::registerPass("gelu-super-approximate",
+      "Use Gelu Super Approximate.",
+      []() -> std::unique_ptr<mlir::Pass> {
+        return mlir::createGeluSuperApproximatePass();
+      });
+
+
   
   
   mlir::registerPass("attribute-promotion",
