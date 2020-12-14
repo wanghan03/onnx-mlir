@@ -13,6 +13,12 @@ void initOMPasses() {
         return mlir::createDecomposeONNXToONNXPass();
       });
 
+    mlir::registerPass("gelu-approx",
+      "Use Gelu Approximation.",
+      []() -> std::unique_ptr<mlir::Pass> {
+        return mlir::createGeluApproxPass();
+      });
+
   mlir::registerPass("shape-inference",
       "Shape inference for frontend dialects.",
       []() -> std::unique_ptr<mlir::Pass> {

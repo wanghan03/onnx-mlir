@@ -38,6 +38,10 @@ set(LLVM_TARGET_DEFINITIONS Decompose.td)
 onnx_mlir_tablegen(ONNXDecompose.inc -gen-rewriters)
 add_public_tablegen_target(OMONNXDecomposeIncGen)
 
+set(LLVM_TARGET_DEFINITIONS GeluApprox.td)
+onnx_mlir_tablegen(GeluApprox.inc -gen-rewriters)
+add_public_tablegen_target(OMONNXGeluApproxIncGen)
+
 set(LLVM_TARGET_DEFINITIONS ConstProp.td)
 onnx_mlir_tablegen(ONNXConstProp.inc -gen-rewriters)
 add_public_tablegen_target(OMONNXConstPropIncGen)
@@ -46,6 +50,7 @@ add_library(OMONNXRewrite
         Rewrite.cpp
         Combine.cpp
         Decompose.cpp
+        GeluApprox.cpp
         ConstProp.cpp)
 target_include_directories(OMONNXRewrite
         PRIVATE ${ONNX_MLIR_SRC_ROOT} ${ONNX_MLIR_BIN_ROOT}
@@ -55,6 +60,7 @@ add_dependencies(OMONNXRewrite
         OMONNXOpsInc
         OMONNXRewriteIncGen
         OMONNXDecomposeIncGen
+        OMONNXGeluApproxIncGen
         OMONNXCombineIncGen
         OMONNXConstPropIncGen)
 
